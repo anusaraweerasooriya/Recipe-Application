@@ -1,7 +1,9 @@
-import { EventEmitter } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { Ingredient } from "../shopping-list/ingredient.modal";
+import { ShoppingListService } from "../shopping-list/shopping-list.service";
 
+@Injectable()
 export class RecipeService {
     recipeSelected = new EventEmitter<Recipe>();
 
@@ -26,9 +28,15 @@ export class RecipeService {
         )
     ];
 
+    constructor(private slService: ShoppingListService) {}
+
     getRecipes() {
         return this.recipes.slice();
         // by slice we send a copy of the recipe
         // array so it cannot access from outside
+    }
+
+    addIngredientsToShoppingList(ingredients: Ingredient[]) {
+        this.slService.addIngredients(ingredients);
     }
 }
